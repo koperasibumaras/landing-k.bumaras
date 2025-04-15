@@ -1,6 +1,6 @@
 html {
     scroll-behavior: smooth;
-    scroll-padding-top: 80px; /* Sesuaikan dengan tinggi navbar kamu */
+    scroll-padding-top: 75px; /* Sesuaikan dengan tinggi navbar kamu */
     height: 100%;
     margin: 0;
     padding: 0;
@@ -11,6 +11,7 @@ body {
     height: 100%;
     margin: 0;
     padding: 0;
+    padding-top: 70px;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
@@ -24,6 +25,8 @@ main {
 
 .navbar {
     background-color: #343a40; /* Ubah menjadi warna lebih gelap agar teks lebih kontras */
+    margin-bottom: 20px; /* Memberi jarak antara navbar dan section */
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2); /* Optional: bayangan agar lebih jelas */
 }
 
 .navbar-brand, .navbar-nav .nav-link {
@@ -60,6 +63,7 @@ section {
 }
 
 #beranda {
+    padding-top: 120px; 
     background-color: #6c757d; /* Warna abu-abu */
     color: white;
 }
@@ -183,7 +187,7 @@ section {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    gap: 100px;
+    gap: 120px;
     max-width: 1200px;
     margin: auto;
 }
@@ -237,8 +241,8 @@ section {
 
 .wa-float {
     position: fixed;
-    bottom: 40px;
-    right: 40px;
+    bottom: 10px;
+    right: 10px;
     z-index: 999;
     background-color: #25d366; /* Warna Hijau WhatsApp */
     color: white;
