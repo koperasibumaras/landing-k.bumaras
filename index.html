@@ -34,25 +34,23 @@
         <ul class="navbar-nav ms-auto">
           <li class="nav-item"><a class="nav-link text-dark" href="#beranda">Beranda</a></li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle text-dark" href="" role="button" data-bs-toggle="dropdown">
-              Tentang Kami
-            </a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#profil">Profil</a></li>
-              <li><a class="dropdown-item" href="#visimisi">Visi & Misi</a></li>
-              <li><a class="dropdown-item" href="#baseline">Baseline Usaha</a></li>
-              <li><a class="dropdown-item" href="#aktivitas">Aktivitas</a></li>
-              <li><a class="dropdown-item" href="#dokumentasi">Dokumentasi</a></li>
-            </ul>
+            <a class="nav-link dropdown-toggle text-dark" href="#" role="button" id="dropdownTentangKami">Tentang Kami</a>
+              <ul class="dropdown-menu" id="menuTentangKami">
+                <li><a class="dropdown-item" href="#profil">Profil</a></li>
+                <li><a class="dropdown-item" href="#visimisi">Visi & Misi</a></li>
+                <li><a class="dropdown-item" href="#baseline">Baseline Usaha</a></li>
+                <li><a class="dropdown-item" href="#aktivitas">Aktivitas</a></li>
+                <li><a class="dropdown-item" href="#dokumentasi">Dokumentasi</a></li>
+              </ul>
           </li> 
          
           <li class="nav-item dropdown">
             <div class="d-flex align-items-center">
-              <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-bs-toggle="dropdown">
-                Struktur 
+              <a class="nav-link dropdown-toggle text-dark" href="#" role="button" id="dropdownStruktur">
+                Struktur
               </a>
             </div>
-            <ul class="dropdown-menu">
+            <ul class="dropdown-menu" id="menuStruktur>
               <li><a class="dropdown-item" href="#struktur">Organisasi</a></li>
               <li><a class="dropdown-item" href="#masterplan">Rencana Kedepan</a></li>
            </ul>        
@@ -352,47 +350,42 @@
     const navCollapse = document.getElementById("navbarNav");
     const bsCollapse = new bootstrap.Collapse(navCollapse, { toggle: false });
 
-    // Tutup navbar saat klik submenu
+    // Tutup menu setelah klik item
     document.querySelectorAll(".dropdown-menu .dropdown-item").forEach(item => {
-      item.addEventListener("click", () => {
-        bsCollapse.hide(); // Tutup navbar (collapse) setelah klik submenu
-      });
+      item.addEventListener("click", () => bsCollapse.hide());
     });
 
-    // Tutup navbar saat klik nav-link biasa
     document.querySelectorAll(".nav-link:not(.dropdown-toggle)").forEach(link => {
-      link.addEventListener("click", () => {
-        bsCollapse.hide();
-      });
+      link.addEventListener("click", () => bsCollapse.hide());
     });
 
-    // Toggle manual dropdown (untuk mengklik kembali menu dropdown)
-    const dropdownToggles = document.querySelectorAll(".dropdown-toggle");
+    // Toggle manual untuk Tentang Kami dan Struktur
+    const dropdowns = [
+      { buttonId: "dropdownTentangKami", menuId: "menuTentangKami" },
+      { buttonId: "dropdownStruktur", menuId: "menuStruktur" }
+    ];
 
-    dropdownToggles.forEach(toggle => {
-      toggle.addEventListener("click", function (e) {
-        e.preventDefault(); // Hindari default behavior
+    dropdowns.forEach(({ buttonId, menuId }) => {
+      const btn = document.getElementById(buttonId);
+      const menu = document.getElementById(menuId);
 
-        const dropdownMenu = this.nextElementSibling;
+      btn.addEventListener("click", function (e) {
+        e.preventDefault();
 
-        // Tutup dropdown lain yang terbuka
-        document.querySelectorAll(".dropdown-menu").forEach(menu => {
-          if (menu !== dropdownMenu) {
-            menu.classList.remove("show");
-          }
+        // Tutup semua dropdown lain
+        document.querySelectorAll(".dropdown-menu").forEach(m => {
+          if (m !== menu) m.classList.remove("show");
         });
 
-        // Toggle dropdown sendiri
-        dropdownMenu.classList.toggle("show");
+        // Toggle yang diklik
+        menu.classList.toggle("show");
       });
     });
 
-    // Klik di luar dropdown, tutup semua dropdown
+    // Tutup semua jika klik di luar dropdown
     document.addEventListener("click", function (e) {
-      if (!e.target.closest(".dropdown")) {
-        document.querySelectorAll(".dropdown-menu").forEach(menu => {
-          menu.classList.remove("show");
-        });
+      if (!e.target.closest(".dropdown-menu") && !e.target.closest(".dropdown-toggle")) {
+        document.querySelectorAll(".dropdown-menu").forEach(menu => menu.classList.remove("show"));
       }
     });
   });
