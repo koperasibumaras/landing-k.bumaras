@@ -349,27 +349,28 @@
 <script>
   const navCollapse = document.getElementById('navbarNav');
 
-  const navLinks = document.querySelectorAll('.nav-link, .dropdown-item');
+  // Semua link di dalam dropdown yang merupakan submenu
+  const dropdownItems = document.querySelectorAll('.dropdown-menu .dropdown-item');
 
-  navLinks.forEach(link => {
-    const parentDropdown = link.closest('.dropdown');
-    const isDropdownToggle = parentDropdown && link.classList.contains('dropdown-toggle');
-    const isInsideDropdown = parentDropdown && !link.classList.contains('dropdown-toggle');
-
-    // Khusus dropdown "Tentang Kami" dan "Struktur Organisasi", jangan tutup menu
-    const isSpecialDropdown = parentDropdown && (
-      parentDropdown.textContent.includes('Tentang Kami') ||
-      parentDropdown.textContent.includes('Struktur Organisasi')
-    );
-
-    if (!isDropdownToggle && !isSpecialDropdown) {
-      link.addEventListener('click', () => {
-        const bsCollapse = new bootstrap.Collapse(navCollapse, {
-          toggle: false
-        });
-        bsCollapse.hide();
+  dropdownItems.forEach(item => {
+    item.addEventListener('click', () => {
+      const bsCollapse = new bootstrap.Collapse(navCollapse, {
+        toggle: false
       });
-    }
+      bsCollapse.hide(); // Menutup menu setelah klik submenu
+    });
+  });
+
+  // Semua link di luar dropdown, misalnya: Beranda, Kontak Kami
+  const directNavLinks = document.querySelectorAll('.nav-link:not(.dropdown-toggle)');
+
+  directNavLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      const bsCollapse = new bootstrap.Collapse(navCollapse, {
+        toggle: false
+      });
+      bsCollapse.hide(); // Menutup menu setelah klik link biasa
+    });
   });
 </script>
 </body>
