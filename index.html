@@ -350,7 +350,7 @@
     const navCollapse = document.getElementById("navbarNav");
     const bsCollapse = new bootstrap.Collapse(navCollapse, { toggle: false });
 
-    // Tutup menu setelah klik item
+    // Tutup menu navbar saat klik submenu atau link biasa
     document.querySelectorAll(".dropdown-menu .dropdown-item").forEach(item => {
       item.addEventListener("click", () => bsCollapse.hide());
     });
@@ -359,7 +359,7 @@
       link.addEventListener("click", () => bsCollapse.hide());
     });
 
-    // Toggle manual untuk Tentang Kami dan Struktur
+    // Dropdown toggle manual
     const dropdowns = [
       { buttonId: "dropdownTentangKami", menuId: "menuTentangKami" },
       { buttonId: "dropdownStruktur", menuId: "menuStruktur" }
@@ -372,17 +372,19 @@
       btn.addEventListener("click", function (e) {
         e.preventDefault();
 
-        // Tutup semua dropdown lain
-        document.querySelectorAll(".dropdown-menu").forEach(m => {
-          if (m !== menu) m.classList.remove("show");
-        });
-
-        // Toggle yang diklik
-        menu.classList.toggle("show");
+        // Jika menu sedang terbuka, tutup
+        if (menu.classList.contains("show")) {
+          menu.classList.remove("show");
+        } else {
+          // Tutup semua dulu
+          document.querySelectorAll(".dropdown-menu").forEach(m => m.classList.remove("show"));
+          // Buka yang diklik
+          menu.classList.add("show");
+        }
       });
     });
 
-    // Tutup semua jika klik di luar dropdown
+    // Tutup dropdown saat klik di luar
     document.addEventListener("click", function (e) {
       if (!e.target.closest(".dropdown-menu") && !e.target.closest(".dropdown-toggle")) {
         document.querySelectorAll(".dropdown-menu").forEach(menu => menu.classList.remove("show"));
