@@ -348,49 +348,69 @@
 
 <!-- Script JS internal -->
 <script>
-  const navCollapse = document.getElementById('navbarNav');
+  const navCollapse = document.getElementById('navbarNav');
 
-  // 1. Tutup navbar saat klik submenu
-  document.querySelectorAll('.dropdown-menu .dropdown-item').forEach(item => {
-    item.addEventListener('click', () => {
-      const bsCollapse = new bootstrap.Collapse(navCollapse, { toggle: false });
-      bsCollapse.hide();
-    });
-  });
+  // Tutup navbar collapse setelah klik submenu
+  const dropdownItems = document.querySelectorAll('.dropdown-menu .dropdown-item');
+  dropdownItems.forEach(item => {
+    item.addEventListener('click', () => {
+      const bsCollapse = new bootstrap.Collapse(navCollapse, {
+        toggle: false
+      });
+      bsCollapse.hide();
+    });
+  });
 
-  // 2. Tutup navbar saat klik menu biasa (non-dropdown-toggle)
-  document.querySelectorAll('.nav-link:not(.dropdown-toggle)').forEach(link => {
-    link.addEventListener('click', () => {
-      const bsCollapse = new bootstrap.Collapse(navCollapse, { toggle: false });
-      bsCollapse.hide();
-    });
-  });
+  // Tutup navbar collapse setelah klik link langsung
+  const directNavLinks = document.querySelectorAll('.nav-link:not(.dropdown-toggle)');
+  directNavLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      const bsCollapse = new bootstrap.Collapse(navCollapse, {
+        toggle: false
+      });
+      bsCollapse.hide();
+    });
+  });
 
-  // 3. Toggle submenu dropdown secara manual
-  document.querySelectorAll('.dropdown-toggle').forEach(toggle => {
-    toggle.addEventListener('click', function (e) {
-      e.preventDefault();
-      const parent = this.closest('.dropdown');
-      const menu = parent.querySelector('.dropdown-menu');
+  // Manual toggle untuk dropdown-toggle
+  const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
+  dropdownToggles.forEach(toggle => {
+    toggle.addEventListener('click', function (e) {
+      e.preventDefault();
+      const dropdownMenu = this.nextElementSibling;
+      const isShown = dropdownMenu.classList.contains('show');
 
-      // Tutup semua dropdown lain
-      document.querySelectorAll('.dropdown-menu.show').forEach(openMenu => {
-        if (openMenu !== menu) openMenu.classList.remove('show');
-      });
+      // Tutup semua dropdown lainnya
+      document.querySelectorAll('.dropdown-menu.show').forEach(menu => {
+        menu.classList.remove('show');
+      });
 
-      // Toggle dropdown yang sedang diklik
-      menu.classList.toggle('show');
-    });
-  });
+      // Toggle yang diklik
+      if (!isShown) {
+        dropdownMenu.classList.add('show');
+      } else {
+        dropdownMenu.classList.remove('show');
+      }
+    });
+  });
 
-  // 4. Klik di luar akan menutup semua dropdown
-  document.addEventListener('click', function (e) {
-    if (!e.target.closest('.dropdown')) {
-      document.querySelectorAll('.dropdown-menu.show').forEach(menu => {
-        menu.classList.remove('show');
-      });
-    }
-  });
+  // Klik di luar dropdown, tutup semua dropdown
+  document.addEventListener('click', function (e) {
+    if (!e.target.closest('.dropdown')) {
+      document.querySelectorAll('.dropdown-menu.show').forEach(menu => {
+        menu.classList.remove('show');
+      });
+    }
+  });
+
+  // Jika window resize ke desktop, sembunyikan semua dropdown manual
+  window.addEventListener('resize', () => {
+    if (window.innerWidth >= 992) {
+      document.querySelectorAll('.dropdown-menu.show').forEach(menu => {
+        menu.classList.remove('show');
+      });
+    }
+  });
 </script>
 </body>
 </html>
