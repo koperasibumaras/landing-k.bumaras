@@ -350,51 +350,40 @@
 <script>
   const navCollapse = document.getElementById('navbarNav');
 
-  // Tutup navbar saat klik submenu
-  const dropdownItems = document.querySelectorAll('.dropdown-menu .dropdown-item');
-  dropdownItems.forEach(item => {
+  // 1. Tutup navbar saat klik submenu
+  document.querySelectorAll('.dropdown-menu .dropdown-item').forEach(item => {
     item.addEventListener('click', () => {
-      const bsCollapse = new bootstrap.Collapse(navCollapse, {
-        toggle: false
-      });
+      const bsCollapse = new bootstrap.Collapse(navCollapse, { toggle: false });
       bsCollapse.hide();
     });
   });
 
-  // Tutup navbar saat klik menu langsung (kecuali dropdown toggle)
-  const directNavLinks = document.querySelectorAll('.nav-link:not(.dropdown-toggle)');
-  directNavLinks.forEach(link => {
+  // 2. Tutup navbar saat klik menu biasa (non-dropdown-toggle)
+  document.querySelectorAll('.nav-link:not(.dropdown-toggle)').forEach(link => {
     link.addEventListener('click', () => {
-      const bsCollapse = new bootstrap.Collapse(navCollapse, {
-        toggle: false
-      });
+      const bsCollapse = new bootstrap.Collapse(navCollapse, { toggle: false });
       bsCollapse.hide();
     });
   });
 
-  // Toggle manual dropdown saat klik "Tentang Kami" atau "Struktur Organisasi"
-  const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
-  dropdownToggles.forEach(toggle => {
+  // 3. Toggle submenu dropdown secara manual
+  document.querySelectorAll('.dropdown-toggle').forEach(toggle => {
     toggle.addEventListener('click', function (e) {
-      e.preventDefault(); // Hindari navigasi #
-      const dropdownMenu = this.nextElementSibling;
-      const isShown = dropdownMenu.classList.contains('show');
+      e.preventDefault();
+      const parent = this.closest('.dropdown');
+      const menu = parent.querySelector('.dropdown-menu');
 
-      // Tutup semua dropdown lain terlebih dahulu
-      document.querySelectorAll('.dropdown-menu.show').forEach(menu => {
-        menu.classList.remove('show');
+      // Tutup semua dropdown lain
+      document.querySelectorAll('.dropdown-menu.show').forEach(openMenu => {
+        if (openMenu !== menu) openMenu.classList.remove('show');
       });
 
-      // Toggle dropdown ini
-      if (!isShown) {
-        dropdownMenu.classList.add('show');
-      } else {
-        dropdownMenu.classList.remove('show');
-      }
+      // Toggle dropdown yang sedang diklik
+      menu.classList.toggle('show');
     });
   });
 
-  // Klik di luar menu akan menutup dropdown
+  // 4. Klik di luar akan menutup semua dropdown
   document.addEventListener('click', function (e) {
     if (!e.target.closest('.dropdown')) {
       document.querySelectorAll('.dropdown-menu.show').forEach(menu => {
